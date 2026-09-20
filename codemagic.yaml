@@ -16,8 +16,14 @@ workflows:
 
       - name: Restore Debug Keystore
         script: |
+          echo "Restoring debug.keystore..."
           if [ -f debug.keystore.base64 ]; then
-            base64 -d debug.keystore.base64 > debug.keystore
+            base64 --decode debug.keystore.base64 > debug.keystore || base64 -d debug.keystore.base64 > debug.keystore
+            echo "Keystore restored successfully: $(ls -l debug.keystore)"
+          else
+            echo "debug.keystore.base64 not found!"
+            ls -la
+            exit 1
           fi
 
       - name: Run Android Unit Tests
