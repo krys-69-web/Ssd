@@ -1,0 +1,40 @@
+workflows:
+  android-workflow:
+    name: Infinite Stretch Android Build
+    max_build_duration: 60
+    instance_type: linux_x2
+
+    environment:
+      java: 21
+      vars:
+        PACKAGE_NAME: "com.aistudio.slmstretch.krvxpm"
+
+    scripts:
+      - name: Set up Gradlew execute permissions
+        script: |
+          chmod +x gradlew
+
+      - name: Restore Debug Keystore
+        script: |
+          if [ -f debug.keystore.base64 ]; then
+            base64 -d debug.keystore.base64 > debug.keystore
+          fi
+
+      - name: Run Android Unit Tests
+        script: |
+          ./gradlew :app:testDebugUnitTest --stacktrace
+
+      - name: Build Android APK
+        script: |
+          ./gradlew :app:assembleDebug --stacktrace
+
+    artifacts:
+      - app/build/outputs/apk/**/*.apk
+
+    publishing:
+      email:
+        recipients:
+          - yjoanchris225@gmail.com
+        notify:
+          success: true
+          failure: true
