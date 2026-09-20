@@ -1,0 +1,6 @@
+{
+  "name": "Infinite Stretch",
+  "description": "Moteur de scaling d'affichage, ratio d'étirement (Stretch X/Y) et reconstruction graphique assistée par IA pour Android 16.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
