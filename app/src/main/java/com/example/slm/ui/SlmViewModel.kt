@@ -112,13 +112,32 @@ class SlmViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    private val shizukuBinderReceivedListener = Shizuku.OnBinderReceivedListener {
+        viewModelScope.launch(Dispatchers.Main) {
+            refreshPermissionStatus()
+        }
+    }
+
+    private val shizukuBinderDeadListener = Shizuku.OnBinderDeadListener {
+        viewModelScope.launch(Dispatchers.Main) {
+            _isShizukuRunning.value = false
+            _isShizukuPermissionGranted.value = false
+            refreshPermissionStatus()
+        }
+    }
+
     init {
         ShizukuExecutor.registerPermissionListener(shizukuPermissionListener)
+        ShizukuExecutor.addBinderReceivedListener(shizukuBinderReceivedListener)
+        ShizukuExecutor.addBinderDeadListener(shizukuBinderDeadListener)
+        refreshPermissionStatus()
     }
 
     override fun onCleared() {
         super.onCleared()
         ShizukuExecutor.unregisterPermissionListener(shizukuPermissionListener)
+        ShizukuExecutor.removeBinderReceivedListener(shizukuBinderReceivedListener)
+        ShizukuExecutor.removeBinderDeadListener(shizukuBinderDeadListener)
     }
 
     fun checkShizukuStatus() {

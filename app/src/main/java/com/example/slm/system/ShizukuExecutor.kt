@@ -29,6 +29,41 @@ object ShizukuExecutor {
     }
 
     /**
+     * Enregistre un écouteur sur la connexion du Binder Shizuku
+     */
+    fun addBinderReceivedListener(listener: Shizuku.OnBinderReceivedListener) {
+        try {
+            Shizuku.addBinderReceivedListenerSticky(listener)
+        } catch (e: Throwable) {
+            Log.e(TAG, "Erreur addBinderReceivedListener", e)
+        }
+    }
+
+    fun removeBinderReceivedListener(listener: Shizuku.OnBinderReceivedListener) {
+        try {
+            Shizuku.removeBinderReceivedListener(listener)
+        } catch (e: Throwable) {
+            Log.e(TAG, "Erreur removeBinderReceivedListener", e)
+        }
+    }
+
+    fun addBinderDeadListener(listener: Shizuku.OnBinderDeadListener) {
+        try {
+            Shizuku.addBinderDeadListener(listener)
+        } catch (e: Throwable) {
+            Log.e(TAG, "Erreur addBinderDeadListener", e)
+        }
+    }
+
+    fun removeBinderDeadListener(listener: Shizuku.OnBinderDeadListener) {
+        try {
+            Shizuku.removeBinderDeadListener(listener)
+        } catch (e: Throwable) {
+            Log.e(TAG, "Erreur removeBinderDeadListener", e)
+        }
+    }
+
+    /**
      * Vérifie si l'application a déjà l'autorisation d'utiliser Shizuku
      */
     fun hasShizukuPermission(): Boolean {
